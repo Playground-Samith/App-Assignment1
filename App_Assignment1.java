@@ -21,7 +21,7 @@ public class App_Assignment1{
         final String SUCCESS_MSG=String.format("%s%s%s",COLOR_GREEN_BOLD,"%s",RESET);
         int[] accountId=new int[0];
         String[] accountName=new String[0];
-        int[] accountBalance=new int[0];
+        double[] accountBalance=new double[0];
 
 
         do{
@@ -101,7 +101,7 @@ public class App_Assignment1{
 
                 int[] newAccountId=new int[accountId.length+1];
                 String[] newAccountName=new String[accountId.length+1];
-                int[] newAccountBalance=new int[accountId.length+1];
+                double[] newAccountBalance=new double[accountId.length+1];
 
 
                     for(int i=0;i<newAccountId.length-1;i++){
