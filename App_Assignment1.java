@@ -5,6 +5,7 @@ public class App_Assignment1{
     public static void main(String[] args) {
         final String CLEAR="\033[H\033[2J";
         final String COLOR_BLUE_BOLD="\033[34;1m";
+        final String COLOR_GREEN_BOLD="\033[32;1m";
         final String COLOR_RED_BOLD="\033[31;1m";
         final String RESET="\033[0m";
         final String DASHBOARD="💰 Welcome to Smart Banking App";
@@ -17,8 +18,10 @@ public class App_Assignment1{
         String screen=DASHBOARD;
         final String LINE="-".repeat(40);
         final String ERROR_MSG=String.format("%s%s%s",COLOR_RED_BOLD,"%s",RESET);
-        String[] accountId=new String[0];
+        final String SUCCESS_MSG=String.format("%s%s%s",COLOR_GREEN_BOLD,"%s",RESET);
+        int[] accountId=new int[0];
         String[] accountName=new String[0];
+        int[] accountBalance=new int[0];
 
 
         do{
@@ -56,23 +59,25 @@ public class App_Assignment1{
                 case OPEN_ACCOUNT:
                     String id;
                     String name;
-                    boolean valid=true;
-                    System.out.printf("\tID : SDB-%05d \n",accountId.length+1);
+                    int deposit;
+                    boolean valid;
+                    System.out.printf("ID : SDB-%05d \n",accountId.length+1);
 
                     //Name Validation
                     do{
-                    System.out.print("\tName : ");
+                    valid=true;
+                    System.out.print("Name : ");
                     name=SCANNER.nextLine().strip();
 
                     if(name.isBlank()){
-                        System.out.printf("\t"+ERROR_MSG+"\n","Name can't be empty");
+                        System.out.printf(ERROR_MSG+"\n","Name can't be empty");
                         valid=false;
                         continue;
                     }
 
                     for(int i=0;i<name.length();i++){
                         if(!(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i)))){
-                            System.out.printf("\t"+ERROR_MSG+"\n","Invalid name");
+                            System.out.printf(ERROR_MSG+"\n","Invalid name");
                             valid=false;
                             break;
                         }
@@ -81,27 +86,43 @@ public class App_Assignment1{
 
                 //Initial Deposit Validation
                 do{
-                    System.out.print("\tInitial Deposit : ");
-                    name=SCANNER.nextLine().strip();
-
-                    if(name.isBlank()){
-                        System.out.printf("\t"+ERROR_MSG+"\n","Name can't be empty");
+                    valid=true;
+                    System.out.print("Initial Deposit : ");
+                    deposit=SCANNER.nextInt();
+                    SCANNER.nextLine();
+                    if(deposit<5000){
+                        System.out.printf(ERROR_MSG+"\n","Insuficient amount");
+                        System.out.printf(ERROR_MSG+"\n","Please deposit at least Rs.5,000.00");
                         valid=false;
                         continue;
                     }
 
-                    for(int i=0;i<name.length();i++){
-                        if(!(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i)))){
-                            System.out.printf("\t"+ERROR_MSG+"\n","Invalid name");
-                            valid=false;
-                            break;
-                        }
-                    }
                 }while(!valid);
 
+                int[] newAccountId=new int[accountId.length+1];
+                String[] newAccountName=new String[accountId.length+1];
+                int[] newAccountBalance=new int[accountId.length+1];
 
-                
-                
+
+                    for(int i=0;i<newAccountId.length-1;i++){
+                        newAccountId[i]=accountId[i];
+                        newAccountName[i]=accountName[i];
+                        newAccountBalance[i]=accountBalance[i];
+                    }
+                    newAccountId[newAccountId.length-1]=newAccountId.length+1;
+                    newAccountName[newAccountName.length-1]=name;
+                    newAccountBalance[newAccountBalance.length-1]=deposit;
+
+                    accountId=newAccountId;
+                    accountName=newAccountName;
+                    accountBalance=newAccountBalance;
+
+                    System.out.printf(SUCCESS_MSG,String.format("Account SDB-%05d for %s has been created sucessfully.\nDo you want to add new student (Y/n)? ",accountId.length,name));
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+
+                break;
+
                 default:
                   System.exit(0);
             }
